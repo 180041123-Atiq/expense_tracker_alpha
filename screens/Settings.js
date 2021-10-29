@@ -82,17 +82,16 @@ const Settings = ({ navigation, route }) => {
             })
 
             if(flag==0){
-                alert('There is nothing to delete.')
+                alert('There is nothing to delete.');
             }
 
         }).catch((error)=>{
             console.log('Error inside handleDeleteIncomeCat '+error);
         });
     }
-    //error error error
-    //Vul korsi name ar user_id hobe
+
     const handleDeleteIncomeCat1 = async () =>{
-        await fetch('http://10.0.2.2:80/expense_tracker_alpha/delete_income_cat_name.php',{
+        await fetch('http://10.0.2.2:80/expense_tracker_alpha/delete_income_cat_name_user_id.php',{
             method:'POST',
             headers:{
                 'Accept':'application/json',
@@ -100,6 +99,7 @@ const Settings = ({ navigation, route }) => {
             },
             body:JSON.stringify({
                 name:deleteincomeCat,
+                user_id:route.params.user_id,
             })
         }).then((response)=>response.json())
         .then((responseJson)=>{
@@ -177,7 +177,7 @@ const Settings = ({ navigation, route }) => {
     }
 
     const handleDeleteExpenseCat1 = async () => {
-        await fetch('http://10.0.2.2:80/expense_tracker_alpha/delete_expense_cat_name.php',{
+        await fetch('http://10.0.2.2:80/expense_tracker_alpha/delete_expense_cat_name_user_id.php',{
             method:'POST',
             headers:{
                 'Accept':'application/json',
@@ -185,6 +185,7 @@ const Settings = ({ navigation, route }) => {
             },
             body:JSON.stringify({
                 name:deleteexpenseCat,
+                user_id:route.params.user_id,
             })
         }).then((response)=>response.json())
         .then((responseJson)=>{
@@ -262,7 +263,7 @@ const Settings = ({ navigation, route }) => {
     }
 
     const handleDeleteModeCat1 = async () => {
-        await fetch('http://10.0.2.2:80/expense_tracker_alpha/delete_mode_cat_name.php',{
+        await fetch('http://10.0.2.2:80/expense_tracker_alpha/delete_mode_cat_name_user_id.php',{
             method:'POST',
             headers:{
                 'Accept':'application/json',
@@ -270,6 +271,7 @@ const Settings = ({ navigation, route }) => {
             },
             body:JSON.stringify({
                 name:deletemodeCat,
+                user_id:route.params.user_id,
             })
         }).then((response)=>response.json())
         .then((responseJson)=>{

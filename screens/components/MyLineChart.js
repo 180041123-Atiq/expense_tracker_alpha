@@ -160,7 +160,7 @@ const MyLineChart = (props) => {
 
         props.profitWeekly.forEach(item => {
             vlabels.push(item.day_col);
-            vdata.push(parseFloat(item.pamount));
+            vdata.push(parseFloat(item.wprofit));
         });
 
         const obj = {
@@ -185,7 +185,7 @@ const MyLineChart = (props) => {
 
         props.profitYearly.forEach(item => {
             vlabels.push(item.month_col);
-            vdata.push(parseFloat(item.pamount));
+            vdata.push(parseFloat(item.yprofit));
         });
 
         const obj = {

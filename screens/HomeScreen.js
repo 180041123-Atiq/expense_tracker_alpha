@@ -1,62 +1,105 @@
-import React,{useState} from 'react';
-import { View,Text,StyleSheet,TouchableOpacity, Button } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Button, ScrollView } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Material from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MyPieChart from './components/MyPieChart';
 
-const HomeScreen = ({navigation,route}) => {
+const HomeScreen = ({ navigation, route }) => {
+
+    const [expenseWeekly, SetExpenseWeekly] = useState([]);
+    const [pie, SetPie] = useState(false);
+
+    useEffect(() => {
+        fetchExpenseWeekly();
+    }, [])
+
+    const fetchExpenseWeekly = async () => {
+        await fetch('http://10.0.2.2:80/expense_tracker_alpha/expense_weekly.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                //user_id:route.params.user_id,
+                user_id: route.params.user_id,
+            })
+        }).then((response) => response.json())
+            .then((responseJson) => {
+
+                let flag = 0;
+                let data = new Array();
+
+                responseJson.forEach(item => {
+                    flag = 1;
+                    data.push(item);
+                })
+
+                if (flag == 0) {
+                    alert('No Income to Show.');
+                } else {
+                    SetExpenseWeekly(data);
+                    SetPie(true);
+                }
+
+            }).catch((error) => {
+                console.log('Error inside handleIncomeWeekly ' + error);
+            });
+    }
 
     const handleIncome = () => {
 
-        navigation.navigate('Income',{
-            color:route.params.color,
-            textColor:route.params.textColor,
-            mood:route.params.mood,
-            email:route.params.email,
-            username:route.params.username,
-            user_id:route.params.user_id,
-            password:route.params.password,
+        navigation.navigate('Income', {
+            color: route.params.color,
+            textColor: route.params.textColor,
+            mood: route.params.mood,
+            email: route.params.email,
+            username: route.params.username,
+            user_id: route.params.user_id,
+            password: route.params.password,
         });
-    
+
     }
 
     const handleExpense = () => {
-        navigation.navigate('Expense',{
-            color:route.params.color,
-            textColor:route.params.textColor,
-            mood:route.params.mood,
-            email:route.params.email,
-            username:route.params.username,
-            user_id:route.params.user_id,
-            password:route.params.password,
+        navigation.navigate('Expense', {
+            color: route.params.color,
+            textColor: route.params.textColor,
+            mood: route.params.mood,
+            email: route.params.email,
+            username: route.params.username,
+            user_id: route.params.user_id,
+            password: route.params.password,
         });
     }
 
     const handleReport = () => {
-        navigation.navigate('Report',{
-            color:route.params.color,
-            textColor:route.params.textColor,
-            mood:route.params.mood,
-            email:route.params.email,
-            username:route.params.username,
-            user_id:route.params.user_id,
-            password:route.params.password,
+        navigation.navigate('Report', {
+            color: route.params.color,
+            textColor: route.params.textColor,
+            mood: route.params.mood,
+            email: route.params.email,
+            username: route.params.username,
+            user_id: route.params.user_id,
+            password: route.params.password,
         });
     }
 
     const handleCharts = () => {
-        navigation.navigate('Charts',{
-            color:route.params.color,
-            textColor:route.params.textColor,
-            mood:route.params.mood,
-            email:route.params.email,
-            username:route.params.username,
-            user_id:route.params.user_id,
-            password:route.params.password,
-            bar:route.params.bar,
-            pie:route.params.pie,
-            line:route.params.line,
+        navigation.navigate('Charts', {
+            color: route.params.color,
+            textColor: route.params.textColor,
+            mood: route.params.mood,
+            email: route.params.email,
+            username: route.params.username,
+            user_id: route.params.user_id,
+            password: route.params.password,
+            bar: route.params.bar,
+            pie: route.params.pie,
+            line: route.params.line,
         });
     }
 
@@ -67,220 +110,209 @@ const HomeScreen = ({navigation,route}) => {
 
     const handleSettings = () => {
 
-        navigation.navigate('Settings',{
-            color:route.params.color,
-            textColor:route.params.textColor,
-            mood:route.params.mood,
-            email:route.params.email,
-            username:route.params.username,
-            user_id:route.params.user_id,
-            password:route.params.password,
+        navigation.navigate('Settings', {
+            color: route.params.color,
+            textColor: route.params.textColor,
+            mood: route.params.mood,
+            email: route.params.email,
+            username: route.params.username,
+            user_id: route.params.user_id,
+            password: route.params.password,
         });
 
     }
 
     const handleBudget = () => {
-        navigation.navigate('Budget',{
-            color:route.params.color,
-            textColor:route.params.textColor,
-            mood:route.params.mood,
-            email:route.params.email,
-            username:route.params.username,
-            user_id:route.params.user_id,
-            password:route.params.password,
+        navigation.navigate('Budget', {
+            color: route.params.color,
+            textColor: route.params.textColor,
+            mood: route.params.mood,
+            email: route.params.email,
+            username: route.params.username,
+            user_id: route.params.user_id,
+            password: route.params.password,
         });
     }
 
     return (
-
-        <View style={styles.container}>
+        <ScrollView
+            style={{
+                backgroundColor: route.params.mood,
+                flex: 1,
+            }}
+        >
             <View
                 style={{
-                    flexDirection:'row',
-                    justifyContent:'space-between',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    margin: 10,
+                    marginBottom:0,
                 }}
             >
                 <View
                     style={{
-                        backgroundColor:'black',
-                        alignItems:'center',
-                        justifyContent:'center',
-                        width:'20%',
-                        borderColor:'#563df5',
-                        borderWidth:4,
-                        borderRadius:10,
+                        borderColor: route.params.color,
+                        borderRadius: 5,
+                        borderWidth: 3,
+                        padding: 5,
+                        alignItems: 'center',
                     }}
                 >
                     <TouchableOpacity
-                        onPress={()=>handleBudget()}
-                    >
-                        <Material
-                            name='calendar-range-outline'
-                            size={50}
-                            color='#563df5'
-                            style={{
-                                margin:5,
-                            }}
-                        />
-                    </TouchableOpacity>
-                </View>
-                <View
-                    style={{
-                        backgroundColor:'black',
-                        alignItems:'center',
-                        justifyContent:'center',
-                        width:'20%',
-                        borderColor:'#563df5',
-                        borderWidth:4,
-                        borderRadius:10,
-                    }}
-                >
-                    <TouchableOpacity
-                        onPress={()=>handleSettings()}
+                        onPress={() => handleSettings()}
                     >
                         <Entypo
                             name='add-to-list'
                             size={50}
                             color={route.params.color}
-                            style={{
-                                margin:5,
-                            }}
                         />
+                    </TouchableOpacity>
+                </View>
+                <View
+                    style={{
+                        borderColor: route.params.color,
+                        borderRadius: 5,
+                        borderWidth: 3,
+                        padding: 5,
+                        alignItems: 'center',
+                    }}
+                >
+                    <TouchableOpacity
+                        onPress={() => handleBudget()}
+                    >
+                        <FontAwesome
+                            name='table'
+                            size={50}
+                            color={route.params.color}
+                        />
+                    </TouchableOpacity>
+                </View>
+            </View>
+            {pie ? <View
+                style={{
+                    width: '100%'
+                }}
+            >
+                <MyPieChart
+                    expenseWeekly={expenseWeekly}
+                    color={route.params.color}
+                    mood={route.params.mood}
+                    textColor={route.params.textColor}
+                    more={false}
+                    type={2}
+                />
+            </View> : null}
+            <View
+                style={{
+                    flexDirection:'row',
+                    justifyContent:'space-between',
+                    margin:10,
+                }}
+            >
+                <View
+                    style={{
+                        width:'40%',
+                        height:60,
+                        borderColor:route.params.color,
+                        borderWidth:3,
+                        borderRadius:5,
+                        alignItems:'center',
+                        justifyContent:'center',
+                    }}
+                >
+                    <TouchableOpacity
+                        onPress={()=>handleIncome()}
+                    >
+                        <Text
+                            style={{
+                                color:route.params.textColor,
+                                fontWeight:'bold',
+                                fontSize:20,
+                            }}
+                        >Income</Text>
+                    </TouchableOpacity>
+                </View>
+                <View
+                    style={{
+                        width:'40%',
+                        height:60,
+                        borderColor:route.params.color,
+                        borderWidth:3,
+                        borderRadius:5,
+                        alignItems:'center',
+                        justifyContent:'center',
+                    }}
+                >
+                    <TouchableOpacity
+                        onPress={()=>handleExpense()}
+                    >
+                        <Text
+                            style={{
+                                color:route.params.textColor,
+                                fontWeight:'bold',
+                                fontSize:20,
+                            }}
+                        >Expense</Text>
                     </TouchableOpacity>
                 </View>
             </View>
             <View
                 style={{
-                    backgroundColor:'#7ae7eb',
-                    marginTop:20,
-                    marginLeft:40,
-                    marginRight:40,
-                    paddingTop:120,
-                    paddingBottom:120,
-                    borderRadius:50,
-                    alignItems:'center',
-                }}
-            >
-                <Text>graph</Text>
-            </View>
-            <View
-                style={{
-                    flexGrow:1,
                     flexDirection:'row',
-
+                    justifyContent:'space-between',
+                    margin:10,
                 }}
             >
-                <TouchableOpacity
-                    style={{flexGrow:1}}
-                    onPress={()=>handleIncome()}
-                >
-                    <View
-                        style={{
-                            flexGrow:1,
-                            backgroundColor:'#7aeb7a',
-                            margin:10,
-                            borderRadius:10,
-                            alignItems:'center',
-                            justifyContent:'center',
-                        }}
-                    >
-                        <Text
-                            style={{
-                                color:'white',
-                                fontWeight:'bold',
-                            }}
-                        >Add Income</Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={{flexGrow:1}}
-                    onPress={()=>handleExpense()}
-                >
-                    <View
-                        style={{
-                            flexGrow:1,
-                            backgroundColor:'#7775f0',
-                            margin:10,
-                            borderRadius:10,
-                            alignItems:'center',
-                            justifyContent:'center',
-                        }}
-                    >
-                        <Text
-                                style={{
-                                    color:'white',
-                                    fontWeight:'bold',
-                                }}
-                        >Add Expense</Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
-            <View
-                style={{
-                    flexGrow:1,
-                    flexDirection:'row',
-                }}
-            >
-                <TouchableOpacity
-                    style={{flexGrow:1}}
-                    onPress={()=>handleReport()}
-                >
-                    <View
-                        style={{
-                            flexGrow:1,
-                            backgroundColor:'#f075b7',
-                            margin:10,
-                            borderRadius:10,
-                            alignItems:'center',
-                            justifyContent:'center',
-                        }}
-                    >
-                        <Text
-                                style={{
-                                    color:'white',
-                                    fontWeight:'bold',
-                                }}
-                        >All Report</Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={{flexGrow:1}}
-                    onPress={()=>handleCharts()}
-                >
                 <View
                     style={{
-                        flexGrow:1,
-                        backgroundColor:'#f0c175',
-                        margin:10,
-                        borderRadius:10,
+                        width:'40%',
+                        height:60,
+                        borderColor:route.params.color,
+                        borderWidth:3,
+                        borderRadius:5,
                         alignItems:'center',
                         justifyContent:'center',
                     }}
                 >
-                    <Text
+                    <TouchableOpacity
+                        onPress={()=>handleReport()}
+                    >
+                        <Text
                             style={{
-                                color:'white',
+                                color:route.params.textColor,
                                 fontWeight:'bold',
+                                fontSize:20,
                             }}
-                        >All Charts</Text>
+                        >Report</Text>
+                    </TouchableOpacity>
                 </View>
-                </TouchableOpacity>
+                <View
+                    style={{
+                        width:'40%',
+                        height:60,
+                        borderColor:route.params.color,
+                        borderWidth:3,
+                        borderRadius:5,
+                        alignItems:'center',
+                        justifyContent:'center',
+                    }}
+                >
+                    <TouchableOpacity
+                        onPress={()=>handleCharts()}
+                    >
+                        <Text
+                            style={{
+                                color:route.params.textColor,
+                                fontWeight:'bold',
+                                fontSize:20,
+                            }}
+                        >Charts</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-            <Button
-                title="test"
-                onPress={()=>handleTest()}
-            />
-        </View>
-
+        </ScrollView>
     )
 
 }
 
 export default HomeScreen;
-
-const styles = StyleSheet.create({
-    container:{
-        flex:1,
-        backgroundColor:'black',
-    }
-})

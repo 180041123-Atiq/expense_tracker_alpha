@@ -16,18 +16,16 @@ const Charts = ({ navigation, route }) => {
     const [expenseWeekly, SetExpenseWeekly] = useState();
     const [expenseYearly, SetExpenseYearly] = useState();
     const [profitWeekly,SetProfitWeekly] = useState();
-    const [profitYearly,SetProfityearly] = useState();
+    const [profitYearly,SetProfitYearly] = useState();
 
     useEffect(() => {
         fetchIncomeWeekly();
         fetchIncomeYearly();
         fetchExpenseWeekly();
         fetchExpenseYearly();
+        fetchProfitWeekly();
+        fetchProfitYearly();
     }, []);
-
-    useEffect(()=>{
-        makeProfitData();
-    },[incomeWeekly,incomeYearly,expenseWeekly,expenseYearly]);
 
     const fetchIncomeWeekly = async () => {
         await fetch('http://10.0.2.2:80/expense_tracker_alpha/income_weekly.php', {
@@ -52,7 +50,7 @@ const Charts = ({ navigation, route }) => {
                 })
 
                 if (flag == 0) {
-                    alert('No Income to Show.');
+                    alert('No weekly Income to Show.');
                 } else {
                     SetIncomeWeekly(data);
                 }
@@ -85,7 +83,7 @@ const Charts = ({ navigation, route }) => {
                 })
 
                 if (flag == 0) {
-                    alert('No Income to Show.');
+                    alert('No yearly Income to Show.');
                 } else {
                     SetIncomeYearly(data);
                 }
@@ -118,7 +116,7 @@ const Charts = ({ navigation, route }) => {
                 })
 
                 if (flag == 0) {
-                    alert('No Income to Show.');
+                    alert('No weekly Expense to Show.');
                 } else {
                     SetExpenseWeekly(data);
                 }
@@ -151,7 +149,7 @@ const Charts = ({ navigation, route }) => {
                 })
 
                 if (flag == 0) {
-                    alert('No Income to Show.');
+                    alert('No yearly Expense to Show.');
                 } else {
                     SetExpenseYearly(data);
                 }
@@ -161,45 +159,70 @@ const Charts = ({ navigation, route }) => {
             });
     }
 
-    //error error error
-    //Database e jei value nai
-    //ogular jonno error dey
-    const makeProfitData = () => {
+    const fetchProfitWeekly = async () => {
+        await fetch('http://10.0.2.2:80/expense_tracker_alpha/profit_weekly.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                //user_id:route.params.user_id,
+                user_id: route.params.user_id,
+            })
+        }).then((response) => response.json())
+            .then((responseJson) => {
 
-        if(incomeWeekly==undefined||expenseWeekly==undefined
-            ||incomeYearly==undefined||expenseYearly==undefined){
-                console.log('There is no data to make Profit data.');
-                return ;
-            }
+                let flag = 0;
+                let data = new Array();
 
-        let arr = new Array();
+                responseJson.forEach(item => {
+                    flag = 1;
+                    data.push(item);
+                })
 
-        for(let i=0;i<7;i++){
+                if (flag == 0) {
+                    alert('No weekly Profit to Show.');
+                } else {
+                    SetProfitWeekly(data);
+                }
 
-            const obj = {
-                day_col:incomeWeekly[i].day_col,
-                pamount:parseFloat(incomeWeekly[i].wamount)-parseFloat(expenseWeekly[i].wamount),
-            }
+            }).catch((error) => {
+                console.log('Error inside handleIncomeWeekly ' + error);
+            });
+    }
 
-            arr.push(obj);
-        }
+    const fetchProfitYearly = async () => {
+        await fetch('http://10.0.2.2:80/expense_tracker_alpha/profit_yearly.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                //user_id:route.params.user_id,
+                user_id: route.params.user_id,
+            })
+        }).then((response) => response.json())
+            .then((responseJson) => {
 
-        SetProfitWeekly(arr);
+                let flag = 0;
+                let data = new Array();
 
-        arr = [];
+                responseJson.forEach(item => {
+                    flag = 1;
+                    data.push(item);
+                })
 
-        for(let i=0;i<12;i++){
+                if (flag == 0) {
+                    alert('No yearly Profit to Show.');
+                } else {
+                    SetProfitYearly(data);
+                }
 
-            const obj = {
-                month_col:incomeYearly[i].month_col,
-                pamount:parseFloat(incomeYearly[i].yamount)-parseFloat(expenseYearly[i].yamount),
-            }
-
-            arr.push(obj);
-        }
-
-        SetProfityearly(arr);
-
+            }).catch((error) => {
+                console.log('Error inside handleIncomeWeekly ' + error);
+            });
     }
 
     const [pie, SetPie] = useState(false);
@@ -217,7 +240,7 @@ const Charts = ({ navigation, route }) => {
         console.log('expense Yearly');
         console.log(expenseYearly);*/
         //makeProfitData();
-        console.log(profitWeekly);
+        //console.log(profitWeekly);
         console.log(profitYearly);
 
         for(let i=0;i<7;i++)
@@ -407,6 +430,8 @@ const Charts = ({ navigation, route }) => {
                 color={route.params.color}
                 mood={route.params.mood}
                 textColor={route.params.textColor}
+                more={true}
+                type={0}
             />:null}
             {line?
             <MyLineChart

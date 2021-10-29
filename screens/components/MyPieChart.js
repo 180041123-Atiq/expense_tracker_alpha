@@ -21,7 +21,7 @@ const MyPieChart = (props) => {
 
   const [DATA, SETDATA] = useState();
   const [visible, SetVisible] = useState(false);
-  const [type,SetType] = useState(0);
+  const [type,SetType] = useState(props.type);
 
   useEffect(() => {
 
@@ -272,7 +272,7 @@ const MyPieChart = (props) => {
         center={[10, 30]}
         absolute
       /> : null}
-      <View
+      {props.more?<View
         style={{
           flexDirection: 'row',
           justifyContent: 'space-around',
@@ -321,7 +321,7 @@ const MyPieChart = (props) => {
             />
           </TouchableOpacity>
         </View>
-      </View>
+      </View>:null}
     </View>
   )
 }

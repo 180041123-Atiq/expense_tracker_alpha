@@ -11,11 +11,11 @@ import MaterialC from 'react-native-vector-icons/MaterialCommunityIcons';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Calender from './Calender';
 
-const DATA = [
+/*const DATA = [
     { id: '1', name: 'atiq', user_id: '2' },
     { id: '2', name: 'shafin', user_id: '2' },
     { id: '3', name: 'edon', user_id: '2' },
-];
+];*/
 
 const Income = ({ navigation, route }) => {
 
@@ -67,12 +67,8 @@ const Income = ({ navigation, route }) => {
         }).then((response) => response.json())
             .then((responseJson) => {
 
-                let flag = 1;
+                let flag = 0;
                 let data = new Array();
-
-                data.push({ id: '2', name: 'Business', user_id: '24' });
-                data.push({ id: '3', name: 'Salary', user_id: '24' });
-                data.push({ id: '4', name: 'Pocket Money', user_id: '24' });
 
                 responseJson.forEach(item => {
                     flag = 1;
@@ -84,7 +80,8 @@ const Income = ({ navigation, route }) => {
                     //console.log(data);
                     SetCat1(true);
                 } else {
-                    alert('There is no data to show.');
+                    alert('There is no Category to show.');
+                    SetCat(false);
                 }
 
             }).catch((error) => {
@@ -161,7 +158,7 @@ const Income = ({ navigation, route }) => {
                         borderColor: route.params.color,
                         borderWidth: 2,
                         borderRadius: 5,
-
+                        height:450,
                     }}
                 >
                     <View
@@ -212,12 +209,8 @@ const Income = ({ navigation, route }) => {
         }).then((response) => response.json())
             .then((responseJson) => {
 
-                let flag = 1;
+                let flag = 0;
                 let data = new Array();
-
-                //data.push({id:'1',name:'Business',user_id:'24'});
-                //data.push({id:'2',name:'Salary',user_id:'24'});
-                //data.push({id:'3',name:'Pocket Money',user_id:'24'});
 
                 responseJson.forEach(item => {
                     flag = 1;
@@ -229,7 +222,8 @@ const Income = ({ navigation, route }) => {
                     //console.log(data);
                     SetMd1(true);
                 } else {
-                    alert('There is no data to show.');
+                    alert('There is no Mode to show.');
+                    SetMd(false);
                 }
 
             }).catch((error) => {
@@ -305,6 +299,7 @@ const Income = ({ navigation, route }) => {
                         borderColor: route.params.color,
                         borderWidth: 2,
                         borderRadius: 5,
+                        height:450,
                     }}
                 >
                     <View
