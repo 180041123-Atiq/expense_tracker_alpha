@@ -65,10 +65,10 @@ const Budget = ({ navigation, route }) => {
             return;
         }
 
-        if (handleNull(type)) {
+        /*if (handleNull(type)) {
             SetErrtxtChk('Choose a type.');
             return;
-        }
+        }*/
 
         if (handleNull(startDate)) {
             SetErrtxtCalender('Start Date can not be empty');
@@ -137,7 +137,8 @@ const Budget = ({ navigation, route }) => {
             })
         }).then((response) => response.json())
             .then((responseJson) => {
-                alert(responseJson);
+                //alert(responseJson);
+                alert("Budget Added.");
             }).catch((error) => {
                 console.log('new ' + error);
             });

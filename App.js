@@ -8,6 +8,7 @@ import {
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import EnTypo from 'react-native-vector-icons/Entypo';
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { hiding } from './screens/components/Cryptic';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -103,7 +104,7 @@ const App = () => {
 
           responseJson.forEach(item => {
 
-            if(item.email==email&&item.password==pass){
+            if(hiding("decrypt",item.email)==email && hiding("decrypt",item.password)==pass){
               flag=1;
               vemail=item.email;
               vpass=item.password;

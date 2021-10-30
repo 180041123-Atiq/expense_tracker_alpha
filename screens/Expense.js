@@ -50,9 +50,10 @@ const Expense = ({ navigation, route }) => {
 
     const handleTest = () => {
         //console.log(exD);
-        handleBudgetCheck();
+        //handleBudgetCheck();
         //getBdData();
         //getExData('2021-10-12','2021-10-30');
+        console.log(bdData);
     }
 
     const handleInc = () => {
@@ -526,14 +527,18 @@ const Expense = ({ navigation, route }) => {
             })
         }).then((response) => response.json())
             .then((responseJson) => {
-                const fl = parseFloat(responseJson).toFixed(2);
+                let fl = parseFloat(responseJson).toFixed(2);
                 const flamt = parseFloat(amt).toFixed(2);
                 const samt = parseFloat(amount).toFixed(2);
 
                 console.log('inside getEx : ' + fl + ' ' + flamt);
 
-                if (fl == 'NaN') {
-                    //alert('No budget to compare, You can Proceed');
+                if(fl == "NaN") {
+                    fl = 0;
+                }
+
+                if (flamt == 'NaN') {
+                    alert('No budget to compare, You can Proceed');
                 } else {
                     let vv = parseFloat(samt)+parseFloat(fl);
                     console.log('www : '+vv);
@@ -817,7 +822,7 @@ const Expense = ({ navigation, route }) => {
             }}
         >
             {bc?returnBcross():null}
-            {false ?
+            {true ?
                 <Button
                     title='test'
                     onPress={() => handleTest()}

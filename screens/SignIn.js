@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {hiding} from './components/Cryptic';
 
 const SignIn = ({ navigation, route }) => {
 
@@ -44,12 +45,12 @@ const SignIn = ({ navigation, route }) => {
 
             responseJson.forEach(item=>{
                 
-                if(item.name==userName){
+                if(hiding("decrypt",item.name)==userName){
                     handleNotAvailable('user');
                     flag=1;
                     console.log('bujhi na kisu '+flag);
                 }
-                if(item.email==email){
+                if(hiding("decrypt",item.email)==email){
                     handleNotAvailable('email');
                     flag=1;
                 }
@@ -81,9 +82,9 @@ const SignIn = ({ navigation, route }) => {
                 'Content-Type':'application/json'
             },
             body:JSON.stringify({
-                name:userName,
-                password:pass,
-                email:email,
+                name:hiding("encrypt",userName),
+                password:hiding("encrypt",pass),
+                email:hiding("encrypt",email),
             })
         }).then((response)=>response.json())
         .then((responseJson)=>{

@@ -252,6 +252,11 @@ const Charts = ({ navigation, route }) => {
 
     const handlePressPie = () => {
 
+        if(handleNull()){
+            alert("Sorry Shortage of Data");
+            return ;
+        }
+
         SetBar(false);
         SetLine(false);
 
@@ -265,6 +270,11 @@ const Charts = ({ navigation, route }) => {
 
     const handlePressBar = () => {
 
+        if(handleNull()){
+            alert("Sorry Shortage of Data");
+            return ;
+        }
+
         SetPie(false);
         SetLine(false);
 
@@ -277,6 +287,11 @@ const Charts = ({ navigation, route }) => {
 
     const handlePressLine = () => {
 
+        if(handleNull()){
+            alert("Sorry Shortage of Data");
+            return ;
+        }
+
         SetPie(false);
         SetBar(false);
 
@@ -286,6 +301,19 @@ const Charts = ({ navigation, route }) => {
             SetLine(false);
         }
 
+    }
+
+    const handleNull = () => {
+        if(!expenseWeekly||
+           !expenseYearly||
+           !incomeWeekly||
+           !incomeYearly||
+           !profitWeekly||
+           !profitYearly){
+               return true;
+           }
+
+        return false;
     }
 
 
