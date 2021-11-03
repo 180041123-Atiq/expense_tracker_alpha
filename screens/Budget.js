@@ -329,7 +329,7 @@ const Budget = ({ navigation, route }) => {
                                 borderRadius: 5,
                                 borderWidth: 4,
                             } : {
-                                backgroundColor: 'black',
+                                backgroundColor: route.params.mood,
                                 borderColor: route.params.color,
                                 borderRadius: 5,
                                 borderWidth: 4,
@@ -417,7 +417,7 @@ const Budget = ({ navigation, route }) => {
                             borderRadius: 5,
                             borderColor: route.params.color,
                         } : {
-                            backgroundColor: 'black',
+                            backgroundColor: route.params.mood,
                             alignItems: 'center',
                             justifyContent: 'center',
                             width: '40%',
@@ -493,7 +493,7 @@ const Budget = ({ navigation, route }) => {
                                 borderRadius: 5,
                                 borderColor: route.params.color,
                             } : {
-                                backgroundColor: 'black',
+                                backgroundColor: route.params.mood,
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 width: '40%',
@@ -592,7 +592,7 @@ const Budget = ({ navigation, route }) => {
                 >
                 <View
                     style={{
-                        backgroundColor:'black',
+                        backgroundColor:route.params.mood,
                         alignItems: 'center',
                         justifyContent: 'center',
                         width: '40%',
@@ -660,7 +660,7 @@ const Budget = ({ navigation, route }) => {
                         borderRadius: 5,
                         borderWidth: 2,
                     } : {
-                        backgroundColor: 'black',
+                        backgroundColor: route.params.mood,
                         width: '40%',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -685,7 +685,7 @@ const Budget = ({ navigation, route }) => {
                 </View>
                 <View
                     style={ex ? {
-                        backgroundColor: 'black',
+                        backgroundColor: route.params.mood,
                         width: '40%',
                         alignItems: 'center',
                         justifyContent: 'center',

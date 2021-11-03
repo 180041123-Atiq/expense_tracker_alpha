@@ -14,7 +14,79 @@ const HomeScreen = ({ navigation, route }) => {
 
     useEffect(() => {
         fetchExpenseWeekly();
-    }, [])
+        checkingZero();
+    }, []);
+
+    const checkingZero = async () => {
+        await fetch('http://10.0.2.2:80/expense_tracker_alpha/show_expense_zero_cat_id_user_id.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                //user_id:route.params.user_id,
+                user_id: route.params.user_id,
+            })
+        }).then((response) => response.json())
+            .then((responseJson) => {
+
+                let flag = 0;
+                let id;
+
+                responseJson.forEach(item => {
+                    if(item.name == 'zero'){
+                        id = item.id;
+                        flag = 1;
+                    }
+                })
+
+                if (flag == 1) {
+                    //SetZeroCatID(id);
+                } else {
+                    createZeroCat();
+                }
+
+            }).catch((error) => {
+                console.log('Error inside getZeroCatID ' + error);
+            });
+    }
+
+    const createZeroCat = async () => {
+        await fetch('http://10.0.2.2:80/expense_tracker_alpha/insert_expense_zero_cat_user_id.php',{
+            method:'POST',
+            headers:{
+                'Accept':'application/json',
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+                name:'zero',
+                user_id:route.params.user_id,
+            })
+        }).then((response)=>response.json())
+        .then((responseJson)=>{
+            //alert("Your Account is created");
+        }).catch((error)=>{
+            console.log('Inside createZeroCat '+error);
+        });
+
+        await fetch('http://10.0.2.2:80/expense_tracker_alpha/insert_income_zero_cat_user_id.php',{
+            method:'POST',
+            headers:{
+                'Accept':'application/json',
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+                name:'zero',
+                user_id:route.params.user_id,
+            })
+        }).then((response)=>response.json())
+        .then((responseJson)=>{
+            //alert("Your Account is created");
+        }).catch((error)=>{
+            console.log('Inside createZeroCat '+error);
+        });
+    }
 
     const fetchExpenseWeekly = async () => {
         await fetch('http://10.0.2.2:80/expense_tracker_alpha/expense_weekly.php', {
@@ -39,7 +111,7 @@ const HomeScreen = ({ navigation, route }) => {
                 })
 
                 if (flag == 0) {
-                    alert('No Income to Show.');
+                    alert('No Expense to Show.');
                 } else {
                     SetExpenseWeekly(data);
                     SetPie(true);
@@ -167,6 +239,25 @@ const HomeScreen = ({ navigation, route }) => {
                             color={route.params.color}
                         />
                     </TouchableOpacity>
+                </View>
+                <View
+                    style={{
+                        borderColor: route.params.color,
+                        borderRadius: 5,
+                        borderWidth: 3,
+                        padding: 5,
+                        alignItems: 'center',
+                        justifyContent:'center',
+                        width:'60%',
+                    }}
+                >
+                    <Text
+                        style={{
+                            color:route.params.textColor,
+                            fontWeight:'bold',
+                            fontSize:20,
+                        }}
+                    >Welcome {route.params.username}</Text>
                 </View>
                 <View
                     style={{

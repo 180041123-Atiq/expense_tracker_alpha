@@ -27,11 +27,11 @@
 			
 		}
 		
+		echo json_encode($arr);
+		
 	}else{
-		echo "No results found.";
+		echo json_encode($arr);
 	}
-	
-	echo json_encode($arr);
 	
 	$conn->close();
 	

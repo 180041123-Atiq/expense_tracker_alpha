@@ -4,6 +4,7 @@ ScrollView,
 TouchableOpacity} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 LogBox.ignoreAllLogs();
 
@@ -79,6 +80,26 @@ const Configure = ({navigation,route}) => {
                 backgroundColor:route.params.mood,
             }}
         >
+            <View
+                style={{
+                    borderColor:route.params.color,
+                    borderWidth:3,
+                    borderRadius:100,
+                    justifyContent:'center',
+                    alignItems:'center',
+                    paddingTop:5,
+                    paddingBottom:10,
+                    marginLeft:120,
+                    marginRight:120,
+                    margin:50,
+                }}
+            >
+                <MIcon
+                  name='card-bulleted-settings-outline'
+                  size={100}
+                  color={route.params.color}
+                />
+            </View>
             <View
                 style={{
                     margin:10,
@@ -247,7 +268,7 @@ const Configure = ({navigation,route}) => {
                 </View>
                 </View>
             </View>
-            <View>
+            {false?<View>
                 <View
                     style={{
                         flexDirection:'row',
@@ -359,7 +380,7 @@ const Configure = ({navigation,route}) => {
                         }}
                     > - LineChart</Text>
                 </View>
-            </View>
+            </View>:null}
             {false?
             <Button
                 title='test'

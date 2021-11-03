@@ -10,22 +10,16 @@
 	
 	$obj = json_decode($json,true);
 	
-	$date_col = $obj['date_col'];
-	$type = $obj['type'];
-	$user_id = $obj['user_id'];
-	 //$user_id = 30;
-	 //$date_col = '2021-11-09T06:00:00.000Z';
-	 //$type = 'ex';
 	
-	//echo json_encode(json_encode($date_col));
+	//$email = $obj['email'];
 	
-	$sql = "SELECT * FROM `budget_table` WHERE start_date<='$date_col' AND '$date_col'<=end_date AND type='$type' AND user_id=$user_id";
+	$user_id = $obj['user_id']; 
+	
+	$sql = "select * from expense_category_table where user_id = $user_id";
 	
 	$result = $conn->query($sql);
 	
 	$arr = array();
-	
-	//$flag = 0;
 	
 	if($result->num_rows>0){
 		
@@ -40,8 +34,6 @@
 	}else{
 		echo json_encode($arr);
 	}
-	
-	//if(flag==1)echo json_encode($arr);
 	
 	$conn->close();
 	

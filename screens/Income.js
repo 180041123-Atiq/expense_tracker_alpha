@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
     View, Text, ScrollView,
     TouchableOpacity, TextInput,
@@ -18,6 +18,48 @@ import Calender from './Calender';
 ];*/
 
 const Income = ({ navigation, route }) => {
+
+    const [zeroCatID,SetZeroCatID] = useState();
+
+    useEffect(()=>{
+        getZeroCatID();
+    },[]);
+
+    const getZeroCatID = async () =>{
+        await fetch('http://10.0.2.2:80/expense_tracker_alpha/show_expense_zero_cat_id_user_id.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                //user_id:route.params.user_id,
+                user_id: route.params.user_id,
+            })
+        }).then((response) => response.json())
+            .then((responseJson) => {
+
+                let flag = 0;
+                let id;
+
+                responseJson.forEach(item => {
+                    if(item.name == 'zero'){
+                        id = item.id;
+                        flag = 1;
+                    }
+                })
+
+                if (flag == 1) {
+                    SetZeroCatID(id);
+                } else {
+                    alert('There is no Zero Category.');
+                }
+
+            }).catch((error) => {
+                console.log('Error inside getZeroCatID ' + error);
+            });
+
+    }
 
     const [amount, SetAmount] = useState('');
     const [desc, SetDesc] = useState('');
@@ -43,7 +85,7 @@ const Income = ({ navigation, route }) => {
     const [addData, SetAddData] = useState();
 
     const handleTest = () => {
-        console.log(mdid.id+' '+mdid.name);
+        console.log(zeroCatID);
     }
 
     const handleCat = async () => {
@@ -509,7 +551,7 @@ const Income = ({ navigation, route }) => {
                 .then((responseJson) => {
 
                     //console.log('add_income.php : '+responseJson);
-                    alert(responseJson);
+                    alert("Income Added");
                     SetAdd1(false);
                     SetAdd(false);
                     SetAmount('');
@@ -518,6 +560,36 @@ const Income = ({ navigation, route }) => {
                 }).catch((error) => {
                     console.log('Error inside handleDeleteIncomeCat ' + error);
                 });
+
+                await fetch('http://10.0.2.2:80/expense_tracker_alpha/add_expense.php', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        amount: 0,
+                        category: parseInt(zeroCatID),
+                        date_col: new Date(calin.date_col),
+                        day_col: calin.day_col,
+                        month_col:calin.month_col,
+                        mode: parseInt(mdid.id),
+                        descp: desc,
+                        user_id: route.params.user_id,
+                    })
+                }).then((response) => response.json())
+                    .then((responseJson) => {
+    
+                        //console.log('add_income.php : '+responseJson);
+                        alert("Income Added");
+                        SetAdd1(false);
+                        SetAdd(false);
+                        SetAmount('');
+                        SetDesc('');
+    
+                    }).catch((error) => {
+                        console.log('Error inside handleDeleteIncomeCat ' + error);
+                    });
         }
 
         const handleDeny = () => {

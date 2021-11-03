@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
     View, Text, ScrollView,
     TouchableOpacity, TextInput,
@@ -18,6 +18,48 @@ import Calender from './Calender';
 ];*/
 
 const Expense = ({ navigation, route }) => {
+
+    const [zeroCatID,SetZeroCatID] = useState();
+
+    useEffect(()=>{
+        getZeroCatID();
+    },[]);
+
+    const getZeroCatID = async () =>{
+        await fetch('http://10.0.2.2:80/expense_tracker_alpha/show_income_zero_cat_id_user_id.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                //user_id:route.params.user_id,
+                user_id: route.params.user_id,
+            })
+        }).then((response) => response.json())
+            .then((responseJson) => {
+
+                let flag = 0;
+                let id;
+
+                responseJson.forEach(item => {
+                    if(item.name == 'zero'){
+                        id = item.id;
+                        flag = 1;
+                    }
+                })
+
+                if (flag == 1) {
+                    SetZeroCatID(id);
+                } else {
+                    alert('There is no Zero Category.');
+                }
+
+            }).catch((error) => {
+                console.log('Error inside getZeroCatID ' + error);
+            });
+
+    }
 
     //for budget checking
     const [bdData, SetBdData] = useState([]);
@@ -47,6 +89,20 @@ const Expense = ({ navigation, route }) => {
     const [add, SetAdd] = useState(false);
     const [add1, SetAdd1] = useState(false);
     const [addData, SetAddData] = useState();
+
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+    
+        if (month.length < 2) 
+            month = '0' + month;
+        if (day.length < 2) 
+            day = '0' + day;
+    
+        return [year, month, day].join('-');
+    }
 
     const handleTest = () => {
         //console.log(exD);
@@ -459,6 +515,7 @@ const Expense = ({ navigation, route }) => {
     const handleBudgetCheck = async () => {
 
         bdData.forEach(item => {
+            console.log("bdData");
             console.log(item);
             getExData(item.name, item.amount, item.start_date, item.end_date);
             //console.log('inside handleBudgetCheck : '+exData);
@@ -476,8 +533,7 @@ const Expense = ({ navigation, route }) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                //user_id:route.params.user_id,
-                date_col: new Date(vd),
+                date_col:formatDate(vd),
                 type: 'ex',
                 user_id: route.params.user_id,
             })
@@ -487,10 +543,6 @@ const Expense = ({ navigation, route }) => {
                 let flag = 1;
                 let data = new Array();
 
-                //data.push({ id: '2', name: 'Business', user_id: '24' });
-                //data.push({ id: '3', name: 'Salary', user_id: '24' });
-                //data.push({ id: '4', name: 'Pocket Money', user_id: '24' });
-
                 responseJson.forEach(item => {
                     flag = 1;
                     data.push(item);
@@ -498,7 +550,6 @@ const Expense = ({ navigation, route }) => {
 
                 if (flag == 1) {
                     SetBdData(data);
-                    //console.log(data);
                 } else {
                     alert('There is no data to show.');
                 }
@@ -510,8 +561,6 @@ const Expense = ({ navigation, route }) => {
     }
 
     const getExData = async (name, amt, start_date, end_date) => {
-
-        //console.log(start_date+' '+end_date);
 
         await fetch('http://10.0.2.2:80/expense_tracker_alpha/ex_date_user_id.php', {
             method: 'POST',
@@ -531,8 +580,6 @@ const Expense = ({ navigation, route }) => {
                 const flamt = parseFloat(amt).toFixed(2);
                 const samt = parseFloat(amount).toFixed(2);
 
-                console.log('inside getEx : ' + fl + ' ' + flamt);
-
                 if(fl == "NaN") {
                     fl = 0;
                 }
@@ -541,7 +588,7 @@ const Expense = ({ navigation, route }) => {
                     alert('No budget to compare, You can Proceed');
                 } else {
                     let vv = parseFloat(samt)+parseFloat(fl);
-                    console.log('www : '+vv);
+                    
 
                     if (vv > flamt) {
 
@@ -673,7 +720,7 @@ const Expense = ({ navigation, route }) => {
                 .then((responseJson) => {
 
                     //console.log('add_income.php : '+responseJson);
-                    alert(responseJson);
+                    alert("Expense Added");
                     SetAdd1(false);
                     SetAdd(false);
                     SetAmount('');
@@ -682,6 +729,36 @@ const Expense = ({ navigation, route }) => {
                 }).catch((error) => {
                     console.log('Error inside handleDeleteIncomeCat ' + error);
                 });
+            
+                await fetch('http://10.0.2.2:80/expense_tracker_alpha/add_income.php', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        amount:0,
+                        category:parseInt(zeroCatID),
+                        date_col:new Date(calin.date_col),
+                        day_col:calin.day_col,
+                        month_col:calin.month_col,
+                        mode:parseInt(mdid.id),
+                        descp:desc,
+                        user_id:route.params.user_id,
+                    })
+                }).then((response) => response.json())
+                    .then((responseJson) => {
+    
+                        //console.log('add_income.php : '+responseJson);
+                        alert("Expense Added");
+                        SetAdd1(false);
+                        SetAdd(false);
+                        SetAmount('');
+                        SetDesc('');
+    
+                    }).catch((error) => {
+                        console.log('Error inside handleDeleteIncomeCat ' + error);
+                    });
         }
 
         const handleDeny = () => {
@@ -822,7 +899,7 @@ const Expense = ({ navigation, route }) => {
             }}
         >
             {bc?returnBcross():null}
-            {true ?
+            {false ?
                 <Button
                     title='test'
                     onPress={() => handleTest()}

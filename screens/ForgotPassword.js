@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import { sendEmail } from './components/send-email';
+import {hiding} from './components/Cryptic';
 
 const ForgotPassword = ({ navigation, route }) => {
 
@@ -38,9 +39,9 @@ const ForgotPassword = ({ navigation, route }) => {
 
           responseJson.forEach(item => {
 
-            if(item.email==email){
+            if(hiding("decrypt",item.email)==email){
               flag=1;
-              pass=item.password;
+              pass=hiding("decrypt",item.password);
             }
 
           })

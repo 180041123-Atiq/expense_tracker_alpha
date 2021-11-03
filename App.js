@@ -109,7 +109,7 @@ const App = () => {
               vemail=item.email;
               vpass=item.password;
               vid=item.id;
-              vname=item.name;
+              vname=hiding("decrypt",item.name);
             }
 
           })
@@ -120,7 +120,7 @@ const App = () => {
           }
 
         }).catch((error) => {
-          console.log('inside HomeScreen ' + error);
+          console.log('inside Login ' + error);
         });
 
     }
@@ -186,7 +186,7 @@ const App = () => {
           backgroundColor: mood,
         }}
       >
-        {true ? <Button
+        {false ? <Button
           title='test'
           onPress={() => handleTest()}
         /> : null}

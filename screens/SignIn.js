@@ -48,7 +48,7 @@ const SignIn = ({ navigation, route }) => {
                 if(hiding("decrypt",item.name)==userName){
                     handleNotAvailable('user');
                     flag=1;
-                    console.log('bujhi na kisu '+flag);
+                    //console.log('bujhi na kisu '+flag);
                 }
                 if(hiding("decrypt",item.email)==email){
                     handleNotAvailable('email');
@@ -59,7 +59,7 @@ const SignIn = ({ navigation, route }) => {
             if(flag==0)handleRegister2();
 
         }).catch((error)=>{
-            console.log('inside HomeScreen '+error);
+            console.log('inside Signing '+error);
         });
         
         return ;
@@ -73,7 +73,7 @@ const SignIn = ({ navigation, route }) => {
         SetErrtxtPass('');
         SetErrtxtUser('');
 
-        console.log('atiq should be here456.');
+        //console.log('atiq should be here456.');
 
         await fetch('http://10.0.2.2:80/expense_tracker_alpha/insert_user.php',{
             method:'POST',
@@ -88,9 +88,9 @@ const SignIn = ({ navigation, route }) => {
             })
         }).then((response)=>response.json())
         .then((responseJson)=>{
-            alert(responseJson);
+            alert("Your Account is created");
         }).catch((error)=>{
-            console.log('new '+error);
+            console.log('Inside Signing '+error);
         });
     }
 
@@ -150,10 +150,10 @@ const SignIn = ({ navigation, route }) => {
                 backgroundColor: route.params.mood,
             }}
         >
-            <Button
+            {false?<Button
                 title='test'
                 onPress={()=>handleTest()}
-            />
+            />:null}
             <View
                 style={{
                     justifyContent: 'center',

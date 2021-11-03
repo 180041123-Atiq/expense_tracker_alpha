@@ -205,7 +205,7 @@ const Report = ({ navigation, route }) => {
 
                 responseJson.forEach(item => {
                     flag = 1;
-                    data.push(item);
+                    if(item.amount>0)data.push(item);
                 })
 
                 if (flag == 0) {
@@ -493,7 +493,7 @@ const Report = ({ navigation, route }) => {
 
                 responseJson.forEach(item => {
                     flag = 1;
-                    data.push(item);
+                    if(item.amount>0)data.push(item);
                 })
 
                 if (flag == 0) {
@@ -1015,7 +1015,7 @@ const Report = ({ navigation, route }) => {
                 flex: 1,
             }}
         >
-            {true ?
+            {false ?
                 <Button
                     title='test'
                     onPress={() => handleTest()}
@@ -1158,7 +1158,7 @@ const Report = ({ navigation, route }) => {
                         color: route.params.textColor,
                         fontSize: 20,
                     }}
-                    placeholder={'Search By Date (YYYY-MM-DD)'}
+                    placeholder={'Search By Date (YYYY-MM-DD-)'}
                     onChangeText={handleSearch}
                     value={searchText}
                     placeholderTextColor={route.params.textColor}

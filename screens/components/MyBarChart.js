@@ -224,11 +224,11 @@ const MyBarChart = (props) => {
         backgroundGradientFrom: "white",
         backgroundGradientFromOpacity: 0,
         backgroundGradientTo: "black",
-        backgroundGradientToOpacity: 0.5,
+        backgroundGradientToOpacity: 1,
         color: () => 'white',
         strokeWidth: 3, // optional, default 3
         barPercentage: 0.5,
-        useShadowColorFromDataset: false // optional
+        useShadowColorFromDataset: false, // optional
     };
 
     const handleTest = () => {

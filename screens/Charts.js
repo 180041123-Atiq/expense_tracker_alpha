@@ -188,7 +188,7 @@ const Charts = ({ navigation, route }) => {
                 }
 
             }).catch((error) => {
-                console.log('Error inside handleIncomeWeekly ' + error);
+                console.log('Error inside handleProfitWeekly ' + error);
             });
     }
 
@@ -221,7 +221,7 @@ const Charts = ({ navigation, route }) => {
                 }
 
             }).catch((error) => {
-                console.log('Error inside handleIncomeWeekly ' + error);
+                console.log('Error inside handleProfitYearly ' + error);
             });
     }
 
@@ -324,7 +324,7 @@ const Charts = ({ navigation, route }) => {
                 flex: 1,
             }}
         >
-            {true ? <Button
+            {false ? <Button
                 title='test'
                 onPress={() => handleTest()}
             /> : null}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
     View, Text, ScrollView,
     TouchableOpacity, TextInput,
@@ -12,6 +12,10 @@ import Entypo from 'react-native-vector-icons/Entypo';
 //shob gular delete1 e code change korte hobe
 
 const Settings = ({ navigation, route }) => {
+
+    useEffect(()=>{
+        alert("Careful!!! any category or mode You delete, the associated data will also get deleted");
+    },[]);
 
     const [addincomeCat,SetAddincomeCat] = useState('');
     const [deleteincomeCat,SetDeleteincomeCat] = useState('');
@@ -46,7 +50,7 @@ const Settings = ({ navigation, route }) => {
         }).then((response)=>response.json())
         .then((responseJson)=>{
             
-            alert(responseJson);
+            alert("Category Added");
             SetAddincomeCat('');
 
         }).catch((error)=>{
@@ -58,6 +62,10 @@ const Settings = ({ navigation, route }) => {
 
         if(handleNullDel(deleteincomeCat))return ;
         if(handleLengthDel(deleteincomeCat))return ;
+        if(deleteincomeCat == 'zero'){
+            alert("Sorry You can not delete default zero category");
+            return ;
+        }
         
         await fetch('http://10.0.2.2:80/expense_tracker_alpha/show_income_cat_user_id.php',{
             method:'POST',
@@ -133,7 +141,7 @@ const Settings = ({ navigation, route }) => {
         }).then((response)=>response.json())
         .then((responseJson)=>{
             
-            alert(responseJson);
+            alert("Category Added");
             SetAddexpenseCat('');
 
         }).catch((error)=>{
@@ -144,6 +152,10 @@ const Settings = ({ navigation, route }) => {
     const handleDeleteExpenseCat = async () => {
         if(handleNullDel(deleteexpenseCat))return ;
         if(handleLengthDel(deleteexpenseCat))return ;
+        if(deleteexpenseCat == 'zero'){
+            alert("Sorry you can not delete default zero category.");
+            return ;
+        }
         
         await fetch('http://10.0.2.2:80/expense_tracker_alpha/show_expense_cat_user_id.php',{
             method:'POST',
@@ -219,7 +231,7 @@ const Settings = ({ navigation, route }) => {
         }).then((response)=>response.json())
         .then((responseJson)=>{
             
-            alert(responseJson);
+            alert("Mode Added");
             SetAddmodeCat('');
 
         }).catch((error)=>{

@@ -151,7 +151,7 @@ const BudgetCross = ({ navigation, route }) => {
                 flex:1,
             }}
         >
-            {true?<Button
+            {false?<Button
                 title='test'
                 onPress={()=>handleTest()}
             />:null}

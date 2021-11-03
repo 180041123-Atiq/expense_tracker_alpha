@@ -245,10 +245,10 @@ const MyLineChart = (props) => {
 
     return (
         <View>
-            <Button
+            {false?<Button
                 title='linetest'
                 onPress={() => handleTest()}
-            />
+            />:null}
             <View
                 style={{
                     backgroundColor: props.mood,
